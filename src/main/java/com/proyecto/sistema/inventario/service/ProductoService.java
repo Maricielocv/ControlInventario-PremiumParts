@@ -7,6 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.proyecto.sistema.inventario.entities.Producto;
 import com.proyecto.sistema.inventario.repository.ProductoRepository;
@@ -23,6 +24,7 @@ public class ProductoService {
         return productoRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
     public List<Producto> listarProductosAleatorios() {
         return productoRepository.listadoAleatorio(PageRequest.of(0, 4));
     }
