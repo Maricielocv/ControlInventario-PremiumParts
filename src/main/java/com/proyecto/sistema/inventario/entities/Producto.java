@@ -1,13 +1,11 @@
 package com.proyecto.sistema.inventario.entities;
 
-import java.beans.Transient;
+import jakarta.persistence.Transient;
 import java.time.LocalDateTime;
 import java.util.Base64;
 
-import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -78,7 +76,6 @@ public class Producto {
     private Integer veces_vendido = 0;
 
     @Lob
-    @Basic(fetch = FetchType.LAZY)
     @Column(nullable = true, columnDefinition = "LONGBLOB")
     private byte[] imagen;
 
