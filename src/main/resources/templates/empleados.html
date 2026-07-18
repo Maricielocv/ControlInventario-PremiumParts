@@ -1,0 +1,335 @@
+<!doctype html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestión de Empleados</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  </head>
+  <body class="bg-[#09090B] p-3 box-border">
+    <div class="parent">
+      <div th:replace="layouts :: sidebar"></div>
+      <!-- Header -->
+      <div class="div2 bg-[#18181B] rounded-lg flex items-center p-4 gap-3">
+        <button
+          id="openSidebar"
+          class="text-[#A1A1AA] hover:text-[#FAFAFA] transition-colors p-1.5 rounded-lg hover:bg-[#27272A] lg:hidden"
+        >
+          <svg
+            class="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M4 6h16M4 12h16M4 18h16"
+            />
+          </svg>
+        </button>
+        <h1
+          class="text-xl md:text-2xl font-bold text-[#FAFAFA] tracking-wide mx-auto"
+        >
+          Bienvenido al panel de administración
+        </h1>
+        <div class="text-right">
+          <div id="fecha" class="text-sm text-[#A1A1AA]"></div>
+          <div id="reloj" class="text-lg font-bold text-[#FAFAFA]">
+            00:00:00
+          </div>
+        </div>
+      </div>
+
+      <!-- Main content -->
+      <div class="div3 bg-[#18181B] rounded-lg p-4">
+        <div class="flex flex-col gap-2">
+          <h1 class="text-2xl">Gestion de empleados</h1>
+          <h3 class="text-[#A1A1AA]">Lista de empleados</h3>
+        </div>
+        <div class="overflow-x-auto mt-4 border border-[#27272A] rounded-lg">
+          <table class="w-full text-base text-center">
+            <thead>
+              <tr
+                class="border-b border-[#27272A] bg-[#a1a1aa]/10 text-[#A1A1AA] uppercase text-xs tracking-wider"
+              >
+                <th class="px-4 py-3 font-medium">ID</th>
+                <th class="px-4 py-3 font-medium">Nombre</th>
+                <!-- <th class="px-4 py-3 font-medium">Apellido</th> -->
+                <th class="px-4 py-3 font-medium">1er apellido</th>
+                <th class="px-4 py-3 font-medium">2do apellido</th>
+                <th class="px-4 py-3 font-medium">Email</th>
+                <th class="px-4 py-3 font-medium">Rol</th>
+                <th class="px-4 py-3 font-medium">Acción</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                class="border-b border-[#27272A] hover:bg-[#1F1F23] transition-colors"
+                th:each="emp: ${listar}"
+              >
+                <td class="px-4 py-3 text-[#FAFAFA]" th:text="${emp.id}">
+                  #001
+                </td>
+                <td class="px-4 py-3 text-[#FAFAFA]" th:text="${emp.nombre}">
+                  Diego Meca
+                </td>
+                <td class="px-4 py-3 text-[#A1A1AA]" th:text="${emp.apellido_paterno}">
+                  Meca
+                </td>
+                <td class="px-4 py-3 text-[#A1A1AA]" th:text="${emp.apellido_materno}">
+                  Flores
+                </td>
+                <td class="px-4 py-3 text-[#A1A1AA]" th:text="${emp.email}">
+                  diego@email.com
+                </td>
+                <td class="px-4 py-3">
+                  <span
+                    th:if="${emp.rol == T(com.proyecto.sistema.inventario.entities.Rol).ROLE_ADMINISTRADOR}"
+                    class="bg-[#2563EB]/20 text-[#2563EB] px-2 py-0.5 rounded-full text-xs font-medium"
+                    th:text="${emp.rol}"
+                    >Admin</span
+                  >
+                  <span
+                    th:if="${emp.rol == T(com.proyecto.sistema.inventario.entities.Rol).ROLE_ALMACENERO}"
+                    class="bg-[#16A34A]/20 text-[#16A34A] px-2 py-0.5 rounded-full text-xs font-medium"
+                    th:text="${emp.rol}"
+                    >Almacenero</span
+                  >
+                  <span
+                    th:if="${emp.rol == T(com.proyecto.sistema.inventario.entities.Rol).ROLE_VENDEDOR}"
+                    class="bg-[#D97706]/20 text-[#D97706] px-2 py-0.5 rounded-full text-xs font-medium"
+                    th:text="${emp.rol}"
+                    >Vendedor</span
+                  >
+                </td>
+                <td class="px-4 py-3">
+                  <div class="flex items-center justify-center gap-2">
+                    <button
+                      class="text-[#2563EB] hover:text-[#3B82F6] font-medium text-xs"
+                      th:attr="data-id=${emp.id},data-nombre=${emp.nombre},data-apellido_paterno=${emp.apellido_paterno},data-apellido_materno=${emp.apellido_materno},data-email=${emp.email},data-password=${emp.password},data-rol=${emp.rol}"
+                      onclick="abrirModalEditarEmpleado(this)"
+                    >
+                      Editar
+                    </button>
+                    <form
+                      th:action="@{/empleados/eliminar/{id}(id=${emp.id})}"
+                      method="post"
+                    >
+                      <button
+                        class="text-[#EF4444] hover:text-[#F87171] font-medium text-xs"
+                        type="submit"
+                        onclick="
+                          return confirm(
+                            '¿Estás seguro de eliminar este empleado?',
+                          );
+                        "
+                      >
+                        Eliminar
+                      </button>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="sidebarOverlay"
+      class="fixed inset-0 bg-black/60 z-40 lg:hidden"
+    ></div>
+
+    <!-- MODAL PARA EDITAR EMPLEADO -->
+    <div
+      id="editarEmpleadoModal"
+      class="fixed inset-0 z-50 hidden flex items-center justify-center p-4"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="editarEmpleadoModalLabel"
+    >
+      <div
+        id="editarBackdrop"
+        class="absolute inset-0 bg-black/60 transition-opacity cursor-pointer"
+        onclick="cerrarModalEmpleado()"
+      ></div>
+      <div
+        class="relative bg-[#18181B] border border-[#27272A] rounded-xl w-full max-w-md max-h-[90vh] overflow-y-auto shadow-xl"
+        role="document"
+      >
+        <div
+          class="flex items-center justify-between p-4 border-b border-[#27272A]"
+        >
+          <h2
+            id="editarEmpleadoModalLabel"
+            class="text-lg font-semibold text-[#FAFAFA]"
+          >
+            Editar empleado
+          </h2>
+          <button
+            type="button"
+            class="text-[#A1A1AA] hover:text-[#FAFAFA] text-xl leading-none p-1"
+            onclick="cerrarModalEmpleado()"
+            aria-label="Cerrar modal"
+          >
+            <svg
+              class="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
+        <form
+          id="formEditarEmpleado"
+          class="p-4 space-y-4"
+          th:action="@{/empleados/guardar}"
+          th:object="${empleado}"
+          method="post"
+        >
+          <input type="hidden" id="editarEmpleadoId" name="id" />
+
+          <div class="space-y-2">
+            <label
+              for="editarEmpleadoNombre"
+              class="block text-xs font-medium text-[#A1A1AA]"
+              >Nombre</label
+            >
+            <input
+              type="text"
+              id="editarEmpleadoNombre"
+              name="nombre"
+              class="w-full bg-[#09090B] border border-[#27272A] rounded-lg px-3 py-2 text-[#FAFAFA] placeholder-[#52525B] text-sm disabled:bg-[#09090B]/50 disabled:text-[#52525B]"
+              readonly
+              required
+            />
+          </div>
+
+          <div class="space-y-2">
+            <label
+              for="editarEmpleadoApellidoPaterno"
+              class="block text-xs font-medium text-[#A1A1AA]"
+              >Apellido paterno</label
+            >
+            <input
+              type="text"
+              id="editarEmpleadoApellidoPaterno"
+              name="apellido_paterno"
+              class="w-full bg-[#09090B] border border-[#27272A] rounded-lg px-3 py-2 text-[#FAFAFA] placeholder-[#52525B] text-sm disabled:bg-[#09090B]/50 disabled:text-[#52525B]"
+              readonly
+              required
+            />
+          </div>
+
+          <div class="space-y-2">
+            <label
+              for="editarEmpleadoApellidoMaterno"
+              class="block text-xs font-medium text-[#A1A1AA]"
+              >Apellido materno</label
+            >
+            <input
+              type="text"
+              id="editarEmpleadoApellidoMaterno"
+              name="apellido_materno"
+              class="w-full bg-[#09090B] border border-[#27272A] rounded-lg px-3 py-2 text-[#FAFAFA] placeholder-[#52525B] text-sm disabled:bg-[#09090B]/50 disabled:text-[#52525B]"
+              readonly
+              required
+            />
+          </div>
+
+          <div class="space-y-2">
+            <label
+              for="editarEmpleadoEmail"
+              class="block text-xs font-medium text-[#A1A1AA]"
+              >Correo electrónico</label
+            >
+            <input
+              type="email"
+              id="editarEmpleadoEmail"
+              name="email"
+              class="w-full bg-[#09090B] border border-[#27272A] rounded-lg px-3 py-2 text-[#FAFAFA] placeholder-[#52525B] text-sm focus:outline-none focus:ring-2 focus:ring-[#2563EB] focus:border-transparent"
+              required
+            />
+          </div>
+
+          <div class="space-y-2">
+            <label
+              for="editarEmpleadoPassword"
+              class="block text-xs font-medium text-[#A1A1AA]"
+              >Contraseña</label
+            >
+            <input
+              type="password"
+              id="editarEmpleadoPassword"
+              name="password"
+              class="w-full bg-[#09090B] border border-[#27272A] rounded-lg px-3 py-2 text-[#FAFAFA] placeholder-[#52525B] text-sm disabled:bg-[#09090B]/50 disabled:text-[#52525B]"
+              readonly
+              placeholder="••••••••"
+            />
+            <p class="text-xs text-[#52525B]">
+              La contraseña no se puede editar
+            </p>
+          </div>
+
+          <div class="space-y-2">
+            <label
+              for="editarEmpleadoRol"
+              class="block text-xs font-medium text-[#A1A1AA]"
+              >Rol</label
+            >
+            <select
+              id="editarEmpleadoRol"
+              name="rol"
+              class="w-full bg-[#09090B] border border-[#27272A] rounded-lg px-3 py-2 text-[#FAFAFA] text-sm focus:outline-none focus:ring-2 focus:ring-[#2563EB] focus:border-transparent appearance-none bg-no-repeat bg-right pr-10"
+              required
+            >
+              <option value="" selected disabled>Selecciona un rol</option>
+              <option
+                th:each="r : ${T(com.proyecto.sistema.inventario.entities.Rol).values()}"
+                th:value="${r}"
+                th:text="${r}"
+              ></option>
+            </select>
+          </div>
+
+          <div
+            class="flex items-center justify-end gap-3 pt-4 border-t border-[#27272A]"
+          >
+            <button
+              type="button"
+              class="px-4 py-2 text-sm font-medium text-[#A1A1AA] bg-[#27272A] border border-[#3F3F46] rounded-lg hover:bg-[#3F3F46] hover:text-[#FAFAFA] transition-colors"
+              onclick="cerrarModalEmpleado()"
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              class="px-4 py-2 text-sm font-medium text-[#09090B] bg-[#FAFAFA] border border-[#FAFAFA] rounded-lg hover:bg-[#E4E4E7] hover:border-[#E4E4E7] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Guardar cambios
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script th:src="@{/js/empleado.js}"></script>
+    <script th:src="@{/js/main.js}"></script>
+  </body>
+</html>

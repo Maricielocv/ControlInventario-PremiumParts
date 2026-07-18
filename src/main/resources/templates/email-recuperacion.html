@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recuperación de Contraseña</title>
+  </head>
+  <body
+    style="
+      margin: 0;
+      padding: 0;
+      background-color: #09090b;
+      font-family: 'Inter', Arial, sans-serif;
+    "
+  >
+    <table
+      width="100%"
+      cellpadding="0"
+      cellspacing="0"
+      style="background-color: #09090b; padding: 40px 0"
+    >
+      <tr>
+        <td align="center">
+          <table
+            width="480"
+            cellpadding="0"
+            cellspacing="0"
+            style="
+              background-color: #18181b;
+              border: 1px solid #27272a;
+              border-radius: 16px;
+              padding: 40px;
+            "
+          >
+            <tr>
+              <td style="text-align: center; padding-bottom: 24px">
+                <h1
+                  style="
+                    color: #fafafa;
+                    font-size: 22px;
+                    font-weight: 600;
+                    margin: 0;
+                  "
+                >
+                  Recuperación de Contraseña
+                </h1>
+                <p style="color: #a1a1aa; font-size: 14px; margin: 8px 0 0 0">
+                  Hemos recibido una solicitud para restablecer tu contraseña
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding-bottom: 24px">
+                <p style="color: #d4d4d8; font-size: 14px; margin: 0">
+                  Hola <strong th:text="${nombre}">Usuario</strong>,
+                </p>
+                <p
+                  style="color: #d4d4d8; font-size: 14px; margin: 12px 0 0 0"
+                >
+                  Haz clic en el botón de abajo para restablecer tu contraseña.
+                  Este enlace expirará en 24 horas.
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td style="text-align: center; padding-bottom: 24px">
+                <a
+                  th:href="${url}"
+                  style="
+                    display: inline-block;
+                    background-color: #2dd4bf;
+                    color: #09090b;
+                    font-size: 14px;
+                    font-weight: 600;
+                    text-decoration: none;
+                    padding: 12px 32px;
+                    border-radius: 10px;
+                  "
+                >
+                  Restablecer contraseña
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding-bottom: 8px">
+                <p
+                  style="
+                    color: #a1a1aa;
+                    font-size: 12px;
+                    margin: 0;
+                    text-align: center;
+                  "
+                >
+                  Si no solicitaste este cambio, puedes ignorar este correo.
+                </p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

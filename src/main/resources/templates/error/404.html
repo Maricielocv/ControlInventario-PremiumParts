@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Page Not Found</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  </head>
+  <body class="bg-[#09090b] text-white">
+
+    <div class="min-h-dvh flex justify-center items-center flex-col gap-5">
+        <div class="text-center flex flex-col gap-2">
+            <h1 th:text="${status}" class="text-7xl font-bold">404</h1>
+            <p class="text-lg">The page you are looking for does not exist. <strong th:text="${path}" class="text-red-600">/ruta-falsa/</strong></p>
+            <p th:text="${message}" class="text-blue-600/70 text-lg">Mensaje detallado del error</p>
+        </div>
+        <div class="w-[300px] h-[350px]">
+            <img src="https://httpmemes.com/404.jpg" alt="Page Not Found">
+        </div>
+    </div>
+
+  </body>
+</html>

@@ -1,0 +1,512 @@
+<!doctype html>
+<html
+  lang="en"
+  xmlns:th="https://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Historial de ventas</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  </head>
+  <body class="bg-[#09090B] p-3 box-border">
+    <div class="parent">
+      <div th:replace="layouts :: sidebar"></div>
+      <div class="div2 bg-[#18181B] rounded-lg flex items-center p-4 gap-3">
+        <button
+          id="openSidebar"
+          class="text-[#A1A1AA] hover:text-[#FAFAFA] transition-colors p-1.5 rounded-lg hover:bg-[#27272A] lg:hidden"
+        >
+          <svg
+            class="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M4 6h16M4 12h16M4 18h16"
+            />
+          </svg>
+        </button>
+        <h1
+          class="text-xl md:text-2xl font-bold text-[#FAFAFA] tracking-wide mx-auto"
+        >
+          Bienvenido al historial de ventas
+        </h1>
+        <div class="text-right">
+          <div id="fecha" class="text-sm text-[#A1A1AA]"></div>
+          <div id="reloj" class="text-lg font-bold text-[#FAFAFA]">
+            00:00:00
+          </div>
+        </div>
+      </div>
+      <div class="div3 bg-[#18181B] rounded-lg md:p-4 p-2">
+        <div class="flex flex-col gap-2 md:mx-4 md:text-start text-center mt-4">
+          <h1 class="text-3xl font-bold text-[var(--text-primary)]">
+            Historial de ventas
+          </h1>
+          <span class="text-sm text-[var(--text-secondary)]"
+            >Revisa todas tus ventas realizadas</span
+          >
+        </div>
+
+        <!-- KPI CARDS -->
+        <div class="flex flex-wrap md:mt-8 mt-4 gap-0">
+          <div class="w-full md:w-1/3 p-4">
+            <div
+              class="bg-[#09090b] border-1 border-[#27272a] shadow-md rounded-2xl p-6 flex items-center gap-3"
+            >
+              <div class="bg-[#2563EB]/20 rounded-xl p-6">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="size-6 text-[#2563EB]"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 0 0 3 15h-.75M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm3 0h.008v.008H18V10.5Zm-12 0h.008v.008H6V10.5Z"
+                  />
+                </svg>
+              </div>
+              <div class="flex flex-col text-white">
+                <span class="text-[var(--text-primary)] font-semibold text-xl"
+                  >Total ventas</span
+                >
+                <span
+                  class="text-[#a1a1aa] font-semibold"
+                  th:text="${cantidadVentas}"
+                  >128</span
+                >
+                <span class="text-[#2dd4bf] text-sm">Ventas registradas</span>
+              </div>
+            </div>
+          </div>
+          <div class="w-full md:w-1/3 p-4">
+            <div
+              class="bg-[#09090b] border-1 border-[#27272a] shadow-md rounded-2xl p-6 flex items-center gap-3"
+            >
+              <div class="bg-[#16A34A]/20 rounded-xl p-6">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="size-6 text-[#16A34A]"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                  />
+                </svg>
+              </div>
+              <div class="flex flex-col text-white">
+                <span class="text-[var(--text-primary)] font-bold text-xl"
+                  >Ingreso total</span
+                >
+                <span
+                  class="text-[#a1a1aa] font-semibold"
+                  th:text="|S/ ${ingresoTotal}|"
+                  >S/ 12,450.00</span
+                >
+                <span class="text-gray-500 text-sm"
+                  >Suma de todas las ventas</span
+                >
+              </div>
+            </div>
+          </div>
+          <div class="w-full md:w-1/3 p-4">
+            <div
+              class="bg-[#09090b] border-1 border-[#27272a] shadow-md rounded-2xl p-6 flex items-center gap-3"
+            >
+              <div class="bg-[#F59E0B]/20 rounded-xl p-6">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="size-6 text-[#F59E0B]"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z"
+                  />
+                </svg>
+              </div>
+              <div class="flex flex-col text-white">
+                <span class="text-[var(--text-primary)] font-bold text-xl"
+                  >Recibo promedio</span
+                >
+                <span
+                  class="text-[#a1a1aa] font-semibold"
+                  th:text="|S/ ${promedioVentas}|"
+                  >S/ 97.27</span
+                >
+                <span class="text-gray-500 text-sm">Promedio por venta</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--? FILTROS - PROXIMA IMPLEMENTACION -->
+        <!-- <div
+          class="w-full flex flex-col gap-4 p-4 bg-[#09090b] rounded-xl mt-4 border-1 border-[#27272a]"
+        >
+          <div class="flex flex-col gap-1">
+            <span class="font-bold text-xl">Filtros de búsqueda</span>
+            <span class="text-sm text-[#a1a1aa]"
+              >Proximamente: filtrar por fecha, método de pago y tipo de
+              recibo</span
+            >
+          </div>
+        </div> -->
+
+        <!--? TABLA DE HISTORIAL DE VENTAS -->
+        <div
+          class="w-full flex flex-col gap-4 p-4 bg-[#09090b] rounded-xl mt-4 border-1 border-[#27272a]"
+        >
+          <div class="flex flex-col gap-1">
+            <span class="font-bold text-xl">Ventas realizadas</span>
+            <span class="text-sm text-[#a1a1aa]"
+              >Listado completo de todas las ventas registradas en el
+              sistema</span
+            >
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm text-left">
+              <thead>
+                <tr
+                  class="border-b border-[#27272A] text-[#A1A1AA] uppercase text-xs tracking-wider"
+                >
+                  <th class="px-4 py-3 font-medium"># Venta</th>
+                  <th class="px-4 py-3 font-medium">Fecha</th>
+                  <th class="px-4 py-3 font-medium">Productos</th>
+                  <th class="px-4 py-3 font-medium">Subtotal</th>
+                  <th class="px-4 py-3 font-medium">Descuento</th>
+                  <!-- <th class="px-4 py-3 font-medium">IGV</th> -->
+                  <th class="px-4 py-3 font-medium">Total</th>
+                  <th class="px-4 py-3 font-medium">Método</th>
+                  <th class="px-4 py-3 font-medium">Recibo</th>
+                  <th class="px-4 py-3 font-medium text-center">Acción</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- th:each="v : ${listaVentas}" trae la lista de ventas desde el backend -->
+                <tr
+                  class="border-b border-[#27272A] hover:bg-[#1F1F23] transition-colors"
+                  th:each="v : ${listaVentas}"
+                >
+                  <td
+                    class="px-4 py-3 text-[#FAFAFA] whitespace-nowrap font-medium"
+                    th:text="${v.id}"
+                  >
+                    #001
+                  </td>
+                  <td
+                    class="px-4 py-3 text-[#A1A1AA] whitespace-nowrap"
+                    th:text="${v.fechaVenta}"
+                  >
+                    2026-07-06
+                  </td>
+                  <td
+                    class="px-4 py-3 text-[#A1A1AA] whitespace-nowrap"
+                    th:text="${v.detalles.size()}"
+                  >
+                    3
+                  </td>
+                  <td
+                    class="px-4 py-3 text-[#FAFAFA] whitespace-nowrap"
+                    th:text="|S/ ${v.subTotal}|"
+                  >
+                    S/ 100.00
+                  </td>
+                  <td
+                    class="px-4 py-3 text-[#FAFAFA] whitespace-nowrap"
+                    th:text="|S/ ${v.descuento}|"
+                  >
+                    S/ 0.00
+                  </td>
+                  <!-- <td
+                    class="px-4 py-3 text-[#FAFAFA] whitespace-nowrap"
+                    th:text="|S/ ${v.igv}|"
+                  >
+                    S/ 18.00
+                  </td> -->
+                  <td
+                    class="px-4 py-3 text-[var(--accent)] whitespace-nowrap font-semibold"
+                    th:text="|S/ ${v.total}|"
+                  >
+                    S/ 118.00
+                  </td>
+                  <td class="px-4 py-3 whitespace-nowrap">
+                    <!-- th:text="${v.metodoPago}" con badge de color segun el metodo -->
+                    <span
+                      th:if="${v.metodoPago == 'efectivo'}"
+                      class="bg-[#16A34A]/20 text-[#16A34A] px-2 py-0.5 rounded-full text-xs font-medium"
+                      >Efectivo</span
+                    >
+                    <span
+                      th:if="${v.metodoPago == 'tarjeta'}"
+                      class="bg-[#2563EB]/20 text-[#2563EB] px-2 py-0.5 rounded-full text-xs font-medium"
+                      >Tarjeta</span
+                    >
+                    <span
+                      th:if="${v.metodoPago == 'transferencia'}"
+                      class="bg-[#F59E0B]/20 text-[#F59E0B] px-2 py-0.5 rounded-full text-xs font-medium"
+                      >Transferencia</span
+                    >
+                  </td>
+                  <td
+                    class="px-4 py-3 text-[#A1A1AA] whitespace-nowrap capitalize"
+                    th:text="${v.tipoRecibo}"
+                  >
+                    Boleta
+                  </td>
+                  <td class="px-4 py-3 whitespace-nowrap text-center">
+                    <a
+                      th:href="@{/historial/detalleVenta/{id}(id=${v.id})}"
+                      class="text-[#2563EB] hover:text-[#3B82F6] font-medium text-xs cursor-pointer"
+                    >
+                      Ver detalle
+                    </a>
+                  </td>
+                </tr>
+                <!-- th:if="${#lists.isEmpty(listaVentas)}" muestra mensaje si no hay ventas -->
+                <tr th:if="${#lists.isEmpty(listaVentas)}">
+                  <td
+                    colspan="10"
+                    class="px-4 py-8 text-center text-[#A1A1AA] text-sm"
+                  >
+                    No se encontraron ventas registradas
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL PARA DETALLE DE VENTA -->
+    <div
+      th:if="${venta != null}"
+      id="detalleVentaModal"
+      class="fixed inset-0 z-50 flex items-center justify-center p-4"
+      aria-hidden="false"
+      role="dialog"
+      aria-modal="true"
+    >
+      <div
+        id="detalleBackdrop"
+        class="absolute inset-0 bg-black/60 transition-opacity cursor-pointer"
+      ></div>
+      <div
+        class="relative bg-[#18181B] rounded-xl shadow-2xl w-full max-w-4xl mx-auto border border-[#27272A] max-h-[90vh] overflow-y-auto"
+      >
+        <div
+          class="flex items-start justify-between px-6 py-4 border-b border-[#27272A]"
+        >
+          <h5 class="text-lg font-semibold text-[#FAFAFA]">
+            Detalle de venta #<span th:text="${venta.id}">001</span>
+          </h5>
+          <a
+            th:href="@{/historial}"
+            class="text-[#A1A1AA] hover:text-[#FAFAFA] transition-colors p-1 rounded-lg hover:bg-[#27272A] cursor-pointer"
+            aria-label="Cerrar"
+          >
+            <svg
+              class="w-5 h-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </a>
+        </div>
+        <div class="px-6 py-4">
+          <!-- INFO GENERAL DE LA VENTA -->
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+            <div class="flex flex-col gap-1">
+              <span
+                class="text-xs font-medium text-[#A1A1AA] uppercase tracking-wider"
+                >Fecha</span
+              >
+              <span class="text-sm text-[#FAFAFA]" th:text="${venta.fechaVenta}"
+                >2026-07-06</span
+              >
+            </div>
+            <div class="flex flex-col gap-1">
+              <span
+                class="text-xs font-medium text-[#A1A1AA] uppercase tracking-wider"
+                >Método de pago</span
+              >
+              <span class="text-sm capitalize" th:text="${venta.metodoPago}"
+                >Efectivo</span
+              >
+            </div>
+            <div class="flex flex-col gap-1">
+              <span
+                class="text-xs font-medium text-[#A1A1AA] uppercase tracking-wider"
+                >Tipo de recibo</span
+              >
+              <span
+                class="text-sm capitalize text-[#FAFAFA]"
+                th:text="${venta.tipoRecibo}"
+                >Boleta</span
+              >
+            </div>
+            <div class="flex flex-col gap-1">
+              <span
+                class="text-xs font-medium text-[#A1A1AA] uppercase tracking-wider"
+                >Productos</span
+              >
+              <span
+                class="text-sm text-[#FAFAFA]"
+                th:text="${venta.detalles.size()}"
+                >3</span
+              >
+            </div>
+          </div>
+
+          <!-- TABLA DE DETALLES -->
+          <div class="overflow-x-auto mb-6">
+            <table class="w-full text-sm text-left">
+              <thead>
+                <tr
+                  class="border-b border-[#27272A] text-[#A1A1AA] uppercase text-xs tracking-wider"
+                >
+                  <th class="px-3 py-2 font-medium">Producto</th>
+                  <th class="px-3 py-2 font-medium">Cantidad</th>
+                  <th class="px-3 py-2 font-medium">Precio unit.</th>
+                  <th class="px-3 py-2 font-medium">Descuento</th>
+                  <th class="px-3 py-2 font-medium text-right">Subtotal</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  class="border-b border-[#27272A]"
+                  th:each="d : ${venta.detalles}"
+                >
+                  <td
+                    class="px-3 py-2 text-[#FAFAFA]"
+                    th:text="${d.producto.nombre}"
+                  >
+                    Producto X
+                  </td>
+                  <td class="px-3 py-2 text-[#A1A1AA]" th:text="${d.cantidad}">
+                    2
+                  </td>
+                  <td
+                    class="px-3 py-2 text-[#A1A1AA]"
+                    th:text="|S/ ${d.precioUnitario}|"
+                  >
+                    S/ 50.00
+                  </td>
+                  <td
+                    class="px-3 py-2 text-[#A1A1AA]"
+                    th:text="|S/ ${d.descuento}|"
+                  >
+                    S/ 0.00
+                  </td>
+                  <td
+                    class="px-3 py-2 text-[#FAFAFA] text-right font-medium"
+                    th:text="|S/ ${d.subtotal}|"
+                  >
+                    S/ 100.00
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- RESUMEN DE PAGO -->
+          <div class="border-t border-[#27272A] pt-4">
+            <div class="flex flex-col gap-1 max-w-xs ml-auto">
+              <div class="flex justify-between text-sm">
+                <span class="text-[#A1A1AA]">Subtotal</span>
+                <span class="text-[#FAFAFA]" th:text="|S/ ${venta.subTotal}|"
+                  >S/ 100.00</span
+                >
+              </div>
+              <div class="flex justify-between text-sm">
+                <span class="text-[#A1A1AA]">Descuento</span>
+                <span class="text-[#FAFAFA]" th:text="|S/ ${venta.descuento}|"
+                  >S/ 0.00</span
+                >
+              </div>
+              <!-- <div class="flex justify-between text-sm">
+                <span class="text-[#A1A1AA]">IGV (18%)</span>
+                <span class="text-[#FAFAFA]" th:text="|S/ ${venta.igv}|"
+                  >S/ 18.00</span
+                >
+              </div> -->
+              <div
+                class="flex justify-between text-sm font-semibold border-t border-[#27272A] pt-1 mt-1"
+              >
+                <span class="text-[#FAFAFA]">Total</span>
+                <span class="text-[var(--accent)]" th:text="|S/ ${venta.total}|"
+                  >S/ 118.00</span
+                >
+              </div>
+              <div
+                th:if="${venta.metodoPago == 'efectivo'}"
+                class="border-t border-[#27272A] pt-1 mt-1"
+              >
+                <div class="flex justify-between text-sm">
+                  <span class="text-[#A1A1AA]">Pago recibido</span>
+                  <span
+                    class="text-[#FAFAFA]"
+                    th:text="|S/ ${venta.pagoRecibido}|"
+                    >S/ 200.00</span
+                  >
+                </div>
+                <div class="flex justify-between text-sm">
+                  <span class="text-[#A1A1AA]">Vuelto</span>
+                  <span class="text-[#16A34A]" th:text="|S/ ${venta.vuelto}|"
+                    >S/ 82.00</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="flex items-center justify-end px-6 py-4 border-t border-[#27272A]"
+        >
+          <a
+            th:href="@{/historial}"
+            class="px-5 py-2.5 rounded-lg bg-[#27272A] text-[#A1A1AA] text-sm font-medium hover:bg-[#3f3f46] hover:text-[#FAFAFA] transition-colors cursor-pointer"
+          >
+            Cerrar
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="sidebarOverlay"
+      class="fixed inset-0 bg-black/60 z-40 lg:hidden"
+    ></div>
+
+    <script th:src="@{/js/historial-venta.js}"></script>
+    <script th:src="@{/js/main.js}"></script>
+  </body>
+</html>

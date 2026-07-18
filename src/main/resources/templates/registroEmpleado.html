@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registro de Empleado</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  </head>
+  <body
+    class="bg-[#09090b] text-[#fafafa] font-['Inter',sans-serif] antialiased min-h-dvh flex items-center justify-center p-4"
+  >
+    <div class="w-full max-w-lg">
+      <div
+        class="bg-[#18181b] border border-[#27272a] rounded-2xl p-4 shadow-lg"
+      >
+        <div class="text-center mb-8">
+          <h1 class="text-2xl font-semibold text-[#fafafa]">
+            Registro de Empleado
+          </h1>
+          <p class="text-[#a1a1aa] text-sm mt-1">
+            Completa los datos para crear una nueva cuenta
+          </p>
+        </div>
+
+        <form
+          th:object="${empleado}"
+          th:action="@{/login/registrar-empleado}"
+          method="post"
+          class="space-y-5"
+        >
+          <div
+            th:if="${#fields.hasAnyErrors()}"
+            class="bg-red-900/30 border border-red-700 text-red-400 px-4 py-3 rounded-xl text-sm"
+          >
+            <span class="font-medium">Corrige los errores del formulario.</span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div>
+              <label
+                for="nombre"
+                class="block text-sm font-medium text-[#a1a1aa] mb-1.5"
+                >Nombre</label
+              >
+              <input
+                type="text"
+                class="block w-full px-3 py-2 rounded-lg bg-[#09090B] border border-[#27272A] text-[#FAFAFA] placeholder-[#A1A1AA]/50 text-sm outline-none focus:border-[#2563EB] focus:ring-1 focus:ring-[#2563EB]/30 transition-colors"
+                th:classappend="${#fields.hasErrors('nombre')} ? 'border-red-500 focus:border-red-500 focus:ring-red-500'"
+                th:field="*{nombre}"
+                placeholder="Juan"
+              />
+              <p
+                class="mt-1 text-xs text-red-400"
+                th:if="${#fields.hasErrors('nombre')}"
+                th:errors="*{nombre}"
+              >
+                Error
+              </p>
+            </div>
+            <div>
+              <label
+                for="apellido_paterno"
+                class="block text-sm font-medium text-[#a1a1aa] mb-1.5"
+                >Apellido paterno</label
+              >
+              <input
+                type="text"
+                class="block w-full px-3 py-2 rounded-lg bg-[#09090B] border border-[#27272A] text-[#FAFAFA] placeholder-[#A1A1AA]/50 text-sm outline-none focus:border-[#2563EB] focus:ring-1 focus:ring-[#2563EB]/30 transition-colors"
+                th:classappend="${#fields.hasErrors('apellido_paterno')} ? 'border-red-500 focus:border-red-500 focus:ring-red-500'"
+                th:field="*{apellido_paterno}"
+                placeholder="Pérez"
+              />
+              <p
+                class="mt-1 text-xs text-red-400"
+                th:if="${#fields.hasErrors('apellido_paterno')}"
+                th:errors="*{apellido_paterno}"
+              >
+                Error
+              </p>
+            </div>
+            <div>
+              <label
+                for="apellido_materno"
+                class="block text-sm font-medium text-[#a1a1aa] mb-1.5"
+                >Apellido materno</label
+              >
+              <input
+                type="text"
+                class="block w-full px-3 py-2 rounded-lg bg-[#09090B] border border-[#27272A] text-[#FAFAFA] placeholder-[#A1A1AA]/50 text-sm outline-none focus:border-[#2563EB] focus:ring-1 focus:ring-[#2563EB]/30 transition-colors"
+                th:classappend="${#fields.hasErrors('apellido_materno')} ? 'border-red-500 focus:border-red-500 focus:ring-red-500'"
+                th:field="*{apellido_materno}"
+                placeholder="García"
+              />
+              <p
+                class="mt-1 text-xs text-red-400"
+                th:if="${#fields.hasErrors('apellido_materno')}"
+                th:errors="*{apellido_materno}"
+              >
+                Error
+              </p>
+            </div>
+          </div>
+
+          <div>
+            <label
+              for="email"
+              class="block text-sm font-medium text-[#a1a1aa] mb-1.5"
+              >Correo electrónico</label
+            >
+            <input
+              type="email"
+              class="block w-full px-3 py-2 rounded-lg bg-[#09090B] border border-[#27272A] text-[#FAFAFA] placeholder-[#A1A1AA]/50 text-sm outline-none focus:border-[#2563EB] focus:ring-1 focus:ring-[#2563EB]/30 transition-colors"
+              th:classappend="${#fields.hasErrors('email')} ? 'border-red-500 focus:border-red-500 focus:ring-red-500'"
+              th:field="*{email}"
+              placeholder="correo@ejemplo.com"
+            />
+            <p
+              class="mt-1 text-xs text-red-400"
+              th:if="${#fields.hasErrors('email')}"
+              th:errors="*{email}"
+            >
+              Error
+            </p>
+          </div>
+
+          <div>
+            <label
+              for="password"
+              class="block text-sm font-medium text-[#a1a1aa] mb-1.5"
+              >Contraseña</label
+            >
+            <input
+              type="password"
+              class="block w-full px-3 py-2 rounded-lg bg-[#09090B] border border-[#27272A] text-[#FAFAFA] placeholder-[#A1A1AA]/50 text-sm outline-none focus:border-[#2563EB] focus:ring-1 focus:ring-[#2563EB]/30 transition-colors"
+              th:classappend="${#fields.hasErrors('password')} ? 'border-red-500 focus:border-red-500 focus:ring-red-500'"
+              th:field="*{password}"
+              minlength="6"
+              placeholder="••••••••"
+            />
+            <p
+              class="mt-1 text-xs text-red-400"
+              th:if="${#fields.hasErrors('password')}"
+              th:errors="*{password}"
+            >
+              Error
+            </p>
+          </div>
+
+          <div>
+            <label
+              for="rol"
+              class="block text-sm font-medium text-[#a1a1aa] mb-1.5"
+              >Rol</label
+            >
+            <select
+              class="block w-full px-3 py-2 rounded-lg bg-[#09090B] border border-[#27272A] text-[#FAFAFA] placeholder-[#A1A1AA]/50 text-sm outline-none focus:border-[#2563EB] focus:ring-1 focus:ring-[#2563EB]/30 transition-colors"
+              th:classappend="${#fields.hasErrors('rol')} ? 'border-red-500 focus:border-red-500 focus:ring-red-500'"
+              th:field="*{rol}"
+            >
+              <option value="" class="bg-[#18181b]">Seleccionar rol...</option>
+              <option
+                th:each="r : ${T(com.proyecto.sistema.inventario.entities.Rol).values()}"
+                th:value="${r}"
+                th:text="${r}"
+                class="bg-[#18181b]"
+              >
+                Administrador
+              </option>
+            </select>
+            <p
+              class="mt-1 text-xs text-red-400"
+              th:if="${#fields.hasErrors('rol')}"
+              th:errors="*{rol}"
+            >
+              Error
+            </p>
+          </div>
+
+          <button
+            type="submit"
+            class="w-full bg-blue-600/70 hover:bg-blue-600 text-[#09090b] font-semibold rounded-xl px-4 py-3 text-sm transition cursor-pointer"
+          >
+            Registrarse
+          </button>
+        </form>
+
+        <p class="text-center text-[#a1a1aa] text-sm mt-6">
+          ¿Ya tienes cuenta?
+          <a
+            th:href="@{/login}"
+            class="text-[#2dd4bf] hover:text-[#2dd4bf]/80 font-medium transition cursor-pointer"
+            >Inicia sesión aquí</a
+          >
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,139 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&display=swap");
+
+:root {
+  --background: #09090b; /* Negro puro / Zinc 950 */
+  --surface: #18181b; /* Zinc 900 (Tarjetas y contenedores) */
+  --text-primary: #fafafa; /* Blanco hueso */
+  --text-secondary: #a1a1aa; /* Gris claro para etiquetas/subtítulos */
+
+  --primary: #ffffff; /* Blanco para botones de alto contraste */
+  --primary-hover: #e4e4e7; /* Blanco grisáceo para hover */
+  --accent: #2dd4bf; /* Teal brillante (Datos/Métricas) */
+  --accent-muted: #115e59; /* Teal oscuro para fondos contenedores */
+
+  --border: #27272a; /* Borde sutil para separar tarjetas */
+  --shadow: none; /* En modo oscuro se prefieren bordes en vez de sombras */
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  color: #fafafa;
+  margin: 0;
+}
+
+.parent {
+  display: grid;
+  grid-template-columns: 16rem 1fr;
+  grid-template-rows: auto 1fr;
+
+  /* grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: auto repeat(4, 1fr); */
+  gap: 10px;
+  min-height: 100dvh;
+}
+
+.div1 {
+  position: sticky;
+  top: 0;
+  height: 100dvh;
+  grid-row: 1 / -1;
+  overflow: hidden;
+}
+
+.div2 {
+  grid-column: 2 / -1;
+}
+
+.div3 {
+  grid-column: 2 / -1;
+  grid-row: 2;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+#sidebar {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+#sidebar nav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+#toggleIcon {
+  transition: transform 0.3s ease;
+}
+
+@media (min-width: 1024px) {
+  .parent.sidebar-collapsed {
+    grid-template-columns: 4.5rem repeat(4, 1fr);
+  }
+
+  .parent.sidebar-collapsed .sidebar-text {
+    display: none;
+  }
+
+  .parent.sidebar-collapsed #sidebar .sidebar-header {
+    justify-content: center;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .parent.sidebar-collapsed #toggleIcon {
+    transform: rotate(180deg);
+  }
+}
+
+@media (max-width: 1023px) {
+  .parent {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto 1fr;
+  }
+
+  .div1 {
+    height: 0;
+    min-height: 0;
+    padding: 0;
+    border: none;
+    overflow: visible;
+  }
+
+  .div2 {
+    grid-column: 1;
+  }
+
+  .div3 {
+    grid-column: 1;
+    grid-row: 3;
+  }
+
+  #sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 50;
+    transform: translateX(-100%);
+    width: 16rem !important;
+    border-radius: 0;
+    transition: transform 0.3s ease;
+  }
+
+  #sidebar.open {
+    transform: translateX(0);
+  }
+
+  #sidebarOverlay {
+    transition: opacity 0.3s ease;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  #sidebarOverlay.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}

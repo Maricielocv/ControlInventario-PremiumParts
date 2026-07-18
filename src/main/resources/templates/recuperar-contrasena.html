@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recuperar Contraseña</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  </head>
+  <body
+    class="bg-[#09090b] text-[#fafafa] font-['Inter',sans-serif] antialiased min-h-dvh flex items-center justify-center p-4"
+  >
+    <div class="w-full max-w-md">
+      <div
+        class="bg-[#18181b] border border-[#27272a] rounded-2xl p-8 shadow-lg"
+      >
+        <div class="text-center mb-8">
+          <h1 class="text-2xl font-semibold text-[#fafafa]">
+            Recuperar Contraseña
+          </h1>
+          <p class="text-[#a1a1aa] text-sm mt-1">
+            Ingresa tu correo y te enviaremos instrucciones
+          </p>
+        </div>
+
+        <form
+          th:action="@{/login/recuperar}"
+          method="post"
+          class="space-y-5"
+        >
+          <div
+            th:if="${error != null}"
+            class="bg-red-900/30 border border-red-700 text-red-400 px-4 py-3 rounded-xl text-sm"
+          >
+            <span th:text="${error}">Error</span>
+          </div>
+
+          <div
+            th:if="${mensaje != null}"
+            class="bg-emerald-900/30 border border-emerald-700 text-emerald-400 px-4 py-3 rounded-xl text-sm"
+          >
+            <span th:text="${mensaje}">Mensaje</span>
+          </div>
+
+          <div>
+            <label
+              for="email"
+              class="block text-sm font-medium text-[#a1a1aa] mb-1.5"
+              >Correo electrónico</label
+            >
+            <input
+              type="email"
+              class="block w-full px-3 py-2 rounded-lg bg-[#09090B] border border-[#27272A] text-[#FAFAFA] placeholder-[#A1A1AA]/50 text-sm outline-none focus:border-[#2563EB] focus:ring-1 focus:ring-[#2563EB]/30 transition-colors"
+              id="email"
+              name="email"
+              required
+              placeholder="correo@ejemplo.com"
+            />
+          </div>
+
+          <button
+            type="submit"
+            class="w-full bg-[#2dd4bf] hover:bg-[#2dd4bf]/80 text-[#09090b] font-semibold rounded-xl px-4 py-3 text-sm transition cursor-pointer"
+          >
+            Enviar instrucciones
+          </button>
+        </form>
+
+        <p class="text-center text-[#a1a1aa] text-sm mt-6">
+          <a
+            th:href="@{/login}"
+            class="text-[#2dd4bf] hover:text-[#2dd4bf]/80 font-medium transition cursor-pointer"
+            >Volver a iniciar sesión</a
+          >
+        </p>
+      </div>
+    </div>
+  </body>
+</html>
