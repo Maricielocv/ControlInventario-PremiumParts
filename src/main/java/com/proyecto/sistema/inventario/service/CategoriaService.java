@@ -16,7 +16,9 @@ public class CategoriaService {
     }
 
     public List<Categoria> listarCategorias(){
-        return categoriaRepository.findAll();
+        List<Categoria> lista = categoriaRepository.findAll();
+        lista.sort((c1, c2) -> c1.getId().compareTo(c2.getId()));
+        return lista;
     }
 
      public void eliminarCategoria(Long id) {
