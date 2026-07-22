@@ -2,6 +2,26 @@ const colores = [
   '#2563EB', '#16A34A', '#D97706', '#DC2626', '#8B5CF6',
   '#EC4899', '#06B6D4', '#F97316', '#14B8A6', '#A855F7'
 ];
+const input = document.getElementById("buscarProducto");
+const list = document.getElementById("sugerenciaProductos");
+let timer;
+
+input.addEventListener("input", () => {
+  clearTimeout(timer);
+  const q = input.value.trim();
+  if (q.length < 2) {
+    list.innerHTML = "";
+    return;
+  }
+
+  timer = setTimeout(async () => {
+    const res = await fetch(
+      `/reporte/sugerencia?q=${encodeURIComponent(q)}`,
+    );
+    const data = await res.json();
+    list.innerHTML = data.map((n) => `<option value="${n}"></option>`).join("");
+  }, 300);
+});
 
 document.addEventListener('DOMContentLoaded', () => {
   const top10Canvas = document.getElementById('top10Chart');
